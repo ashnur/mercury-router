@@ -15,11 +15,14 @@ function routeView(defn, args) {
 
     var match = routeMap(defn);
 
-    var res = match(args.route);
-    if (!res) {
+    var results = match(args.route);
+    if (!results || results.length <= 0) {
         throw new Error('router: no match found');
     }
 
-    res.params.url = res.url;
-    return res.fn(res.params);
+    
+    return results.map(function(res){
+        res.params.url = res.url;
+        return res.fn(res.params);
+    })
 }
